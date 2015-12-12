@@ -1,4 +1,4 @@
-var maxVorp=function(players,budget){
+var maxVorp = function(players,budget){
     team={};
     for(var player in players){
         if(!(positionInTeam(players[player].position))){
@@ -8,12 +8,12 @@ var maxVorp=function(players,budget){
                 team[player]=players[player];
                 budget-=players[player].salary;
             }
-            //The else if below is a counter measure for when we find a player with
+            //The if below is a countermeasure for when we find a player with
             //a higher vorp, can afford, and has a unique position. If you think this
-            //is useless, try adding the following at the end of players.
+            //is useless, try adding the following within players.
             //"Ribbit":{"vorp":3000,"salary":3,"position":"spaghetti"}
             var playerMin=minVorpInTeam();
-            else if(players[player].vorp>team[playerMin].vorp){
+            if(players[player].vorp>team[playerMin].vorp){
                 //if the player's vorp is greater than someone else on the team.
                 if(players[player].salary<=budget+team[playerMin].salary){
                     //if we can afford the player
@@ -54,23 +54,22 @@ function positionInTeam(value,getName){
     return false;
 }
 function minVorpInTeam(){
-    var lowestVorp=-Infinity;
+    var lowestVorp=Infinity;
     var lowestPlayer;
     for(var i in team){
-        if(team[i].vorp>lowestVorp){
+        if(team[i].vorp<lowestVorp){
             lowestVorp=team[i].vorp;
             lowestPlayer=i;
         }
     }
     return lowestPlayer;
 }
-/* ----TEST DATA----
+/* ---- TEST DATA ----
 players={
+    "Ribbit":{"vorp":3000,"salary":3,"position":"spaghetti"},
     "Jake":{"vorp":40,"salary":500,"position":"2B"},
     "Bob":{"vorp":30,"salary":400,"position":"3B"},
-    "Mark":{"vorp":50,"salary":600,"position":"2B"},
-    "Ribbit":{"vorp":3000,"salary":3,"position":"spaghetti"}
-    
+    "Mark":{"vorp":50,"salary":600,"position":"2B"}
 };
 maxVorp(players,1000);//Bob and Mark
 */
